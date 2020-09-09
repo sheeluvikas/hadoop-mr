@@ -1,4 +1,4 @@
-package com.practice;
+package com.practice.viewcount;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
