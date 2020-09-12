@@ -1,4 +1,4 @@
-package com.practice.viewcount;
+package com.practice.maxtemp;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
@@ -11,37 +11,34 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+
 /**
- * This class is a driver for view count.
+ * This program is a map reduce code showing the implementation of finding max temperature
+ * per day.
  *
- * input args(Program arguments) : src/main/resources/data/input src/main/resources/outData/
+ * The input args are : src/main/resources/temp src/main/resources/outData/
  */
-public class ViewCountDriver extends Configured implements Tool {
+public class MaxTempDriver extends Configured implements Tool {
 
-    public static void main(String[] args) throws Exception {
-
-        int exitCode = ToolRunner.run(new ViewCountDriver(), args);
+    public static void main(String args[]) throws Exception {
+        int exitCode = ToolRunner.run(new MaxTempDriver(), args);
         System.exit(exitCode);
     }
-
     public int run(String[] args) throws Exception {
 
-        Configuration configuration = this.getConf();
-        Job job = Job.getInstance(configuration);
-        job.setJobName("ViewCount");
-        job.setJarByClass(ViewCountDriver.class);
+        Configuration conf = this.getConf();
+        Job job = Job.getInstance(conf);
+        job.setJobName("MaxTemperaturePerDay");
+        job.setJarByClass(MaxTempDriver.class);
 
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
-        job.setMapperClass(ViewCountMapper.class);
-        job.setReducerClass(ViewCountReducer.class);
-
-        job.setNumReduceTasks(2);
+        job.setMapperClass(MaxTempMapper.class);
+        job.setReducerClass(MaxTempReducer.class);
 
         Path inputFilePath = new Path(args[0]);
         Path outputFilePath = new Path(args[1]);
-
 
         FileInputFormat.addInputPath(job, inputFilePath);
         FileOutputFormat.setOutputPath(job, outputFilePath);
